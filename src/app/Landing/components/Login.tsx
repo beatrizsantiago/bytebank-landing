@@ -1,14 +1,19 @@
 import { useState } from 'react';
 import { Input, Button } from '@bytebank/styleguide';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 import Modal from '../../../components/Modal';
 import LoginIcon from '../../../assets/login.svg';
+import useApi from '../../../services/useApi'
 
 type Props = {
   onClose: () => void;
 };
 
 const Login = ({ onClose }:Props) => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,7 +23,22 @@ const Login = ({ onClose }:Props) => {
 
     setLoading(true);
 
-    console.log({ email, password });
+    const response = await useApi({
+      url: '/user/auth',
+      options: {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      },
+    });
+
+    const data = await response.json();
+
+    if (data?.result?.token) {
+      localStorage.setItem('@auth', data?.result?.token);
+      navigate('/painel');
+    } else {
+      toast.error('Erro ao realizar login, tente novamente!');
+    }
 
     setLoading(false);
   };
