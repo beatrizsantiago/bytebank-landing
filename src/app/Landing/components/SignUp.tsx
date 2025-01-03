@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Input, Button } from '@bytebank/styleguide';
-import { toast } from 'react-toastify';
 
 import Modal from '../../../components/Modal';
 import SignUpLogo from '../../../assets/sign_up.svg';
 import useApi from '../../../services/useApi'
+import toast from '../../../utils/toast';
 
 type Props = {
   onClose: () => void;
@@ -32,10 +32,10 @@ const SignUp = ({ onClose }:Props) => {
     const data = await response.json();
 
     if (data?.result?.id) {
-      toast.success('Conta criada com sucesso!');
+      toast({ text: 'Conta criada com sucesso!', type: 'SUCCESS' });
       onClose();
     } else {
-      toast.error('Erro ao criar conta, tente novamente!');
+      toast({ text: 'Erro ao criar conta, tente novamente!', type: 'ERROR' });
     }
 
     setLoading(false);    
