@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Input, Button } from '@bytebank/styleguide';
+import { toast } from 'react-toastify';
 
 import Modal from '../../../components/Modal';
 import SignUpLogo from '../../../assets/sign_up.svg';
+import useApi from '../../../services/useApi'
 
 type Props = {
   onClose: () => void;
 };
 
 const SignUp = ({ onClose }:Props) => {
-  const [fullName, setFullName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,7 +21,22 @@ const SignUp = ({ onClose }:Props) => {
 
     setLoading(true);
 
-    console.log({ fullName, email, password });
+    const response = await useApi({
+      url: 'user',
+      options: {
+        method: 'POST',
+        body: JSON.stringify({ username, email, password }),
+      },
+    })
+
+    const data = await response.json();
+
+    if (data?.result?.id) {
+      toast.success('Conta criada com sucesso!');
+      onClose();
+    } else {
+      toast.error('Erro ao criar conta, tente novamente!');
+    }
 
     setLoading(false);    
   };
@@ -42,9 +59,9 @@ const SignUp = ({ onClose }:Props) => {
           <div className="w-full flex flex-col mb-6">
             <label className="mb-1"><b>Nome</b></label>
             <Input
-              placeholder="Digite seu nome completo"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Digite seu nome"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               minLength={3}
               required
             />
