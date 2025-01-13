@@ -1,4 +1,4 @@
-const BASE_URL = 'https://d2dg8ollv4ao6v.cloudfront.net'
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 type Props = {
   url: string;
