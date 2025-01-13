@@ -1,4 +1,4 @@
-const BASE_URL = 'http://fiap-loadbalancer-294654420.sa-east-1.elb.amazonaws.com'
+const BASE_URL = 'https://d2dg8ollv4ao6v.cloudfront.net'
 
 type Props = {
   url: string;
