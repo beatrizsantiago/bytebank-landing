@@ -1,4 +1,4 @@
-const BASE_URL = process.env.API_URL;
+const BASE_URL = 'http://fiap-loadbalancer-294654420.sa-east-1.elb.amazonaws.com'
 
 type Props = {
   url: string;
